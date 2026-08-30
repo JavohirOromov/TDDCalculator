@@ -9,10 +9,10 @@ import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 
 /**
- * Created by: Javohir Oromov macos
+ * Created by: Javohir Oromov macOS
  * Project: TDDCalculator
  * Package: com.javohir.tddcalculator
- * Description: 
+ * Description: MainPage Unit test
  */
 class MainPage(
      composeTestRule: AndroidComposeTestRule<ActivityScenarioRule<MainActivity>, MainActivity>
@@ -22,16 +22,22 @@ class MainPage(
         hasTestTag(testTag = "number one button") and
                 hasText(text = "1") and
                 hasClickAction())
+    private val numberTwoButton = composeTestRule.onNode(
+        hasTestTag(testTag = "number two button") and
+                hasText(text = "2") and
+                hasClickAction())
+
+
+    private val numberZeroButton = composeTestRule.onNode(
+        hasTestTag(testTag = "number zero button") and
+                hasText(text = "0") and
+                hasClickAction())
 
     private val plusButton = composeTestRule.onNode(
         hasTestTag(testTag = "plus button") and
                 hasText(text = "+") and
                 hasClickAction())
 
-    private val numberTwoButton = composeTestRule.onNode(
-        hasTestTag(testTag = "number two button") and
-                hasText(text = "2") and
-                hasClickAction())
 
     private val equalsButon = composeTestRule.onNode(
         hasTestTag(testTag = "equals button") and
@@ -40,7 +46,7 @@ class MainPage(
     )
 
     private val inputText = composeTestRule.onNode(
-        hasTestTag(testTag = "input text  ") and
+        hasTestTag(testTag = "input text") and
                 hasNoClickAction()
     )
 
@@ -72,4 +78,7 @@ class MainPage(
         resultText.assertTextEquals(expected)
     }
 
+    fun clickNumberZero() {
+        numberZeroButton.performClick()
+    }
 }

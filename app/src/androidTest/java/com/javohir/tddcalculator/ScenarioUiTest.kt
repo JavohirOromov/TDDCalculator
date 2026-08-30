@@ -1,5 +1,4 @@
 package com.javohir.tddcalculator
-
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Rule
@@ -10,8 +9,9 @@ import org.junit.runner.RunWith
  * Created by: Javohir Oromov macos
  * Project: TDDCalculator
  * Package: com.javohir.tddcalculator
- * Description: 
+ * Description: Ui Test
  */
+
 @RunWith(value = AndroidJUnit4::class)
 class ScenarioUiTest {
 
@@ -36,6 +36,35 @@ class ScenarioUiTest {
         mainPage.assertResult(expected = "3")
     }
 
-    
+    @Test
+    fun sum_of_two_numbers_corner_case(){
+        mainPage.clickNumberOneButton()
+        mainPage.assertInputField(expected = "1")
+
+        var expected = "1"
+
+        repeat(times = 9){
+            mainPage.clickNumberZero()
+            expected += "0"
+            mainPage.assertInputField(expected = expected)
+        }
+
+        mainPage.clickOperationPlusButton()
+        mainPage.assertInputField(expected = "1000000000+")
+
+        mainPage.clickNumberTwoButton()
+        mainPage.assertInputField(expected = "1000000000+2")
+
+        expected = "1000000000+2"
+        repeat(times = 9){
+            mainPage.clickNumberZero()
+            expected += "0"
+            mainPage.assertInputField(expected = expected)
+        }
+
+        mainPage.clickEqualsButton()
+        mainPage.assertInputField(expected = "1000000000+2000000000")
+        mainPage.assertResult(expected = "3000000000")
+    }
 }
 
