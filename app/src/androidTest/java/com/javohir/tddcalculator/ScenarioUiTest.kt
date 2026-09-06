@@ -25,13 +25,13 @@ class ScenarioUiTest {
         mainPage.clickNumberOneButton()
         mainPage.assertInputField(expected = "1")
 
-        mainPage.clickOperationPlusButton()
+        mainPage.plus()
         mainPage.assertInputField(expected = "1+")
 
         mainPage.clickNumberTwoButton()
         mainPage.assertInputField(expected = "1+2")
 
-        mainPage.clickEqualsButton()
+        mainPage.calculate()
         mainPage.assertInputField(expected = "1+2")
         mainPage.assertResult(expected = "3")
     }
@@ -44,12 +44,12 @@ class ScenarioUiTest {
         var expected = "1"
 
         repeat(times = 9){
-            mainPage.clickNumberZero()
+            mainPage.inputZero()
             expected += "0"
             mainPage.assertInputField(expected = expected)
         }
 
-        mainPage.clickOperationPlusButton()
+        mainPage.plus()
         mainPage.assertInputField(expected = "1000000000+")
 
         mainPage.clickNumberTwoButton()
@@ -57,12 +57,12 @@ class ScenarioUiTest {
 
         expected = "1000000000+2"
         repeat(times = 9){
-            mainPage.clickNumberZero()
+            mainPage.inputZero()
             expected += "0"
             mainPage.assertInputField(expected = expected)
         }
 
-        mainPage.clickEqualsButton()
+        mainPage.calculate()
         mainPage.assertInputField(expected = "1000000000+2000000000")
         mainPage.assertResult(expected = "3000000000")
     }

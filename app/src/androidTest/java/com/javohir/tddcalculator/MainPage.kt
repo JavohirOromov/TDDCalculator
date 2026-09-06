@@ -4,9 +4,8 @@ import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasNoClickAction
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.junit4.AndroidComposeTestRule
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.performClick
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 
 /**
  * Created by: Javohir Oromov macOS
@@ -14,9 +13,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
  * Package: com.javohir.tddcalculator
  * Description: MainPage Unit test
  */
-class MainPage(
-     composeTestRule: AndroidComposeTestRule<ActivityScenarioRule<MainActivity>, MainActivity>
- ) {
+class MainPage(private val composeTestRule: ComposeContentTestRule) {
 
     private val numberOneButton = composeTestRule.onNode(
         hasTestTag(testTag = "number one button") and
@@ -39,12 +36,51 @@ class MainPage(
                 hasClickAction())
 
 
-    private val equalsButon = composeTestRule.onNode(
+    private val equalsButton = composeTestRule.onNode(
         hasTestTag(testTag = "equals button") and
         hasText(text = "=") and
         hasClickAction()
     )
 
+    private val minusButton =
+        composeTestRule.onNode(
+            hasTestTag("minus button") and
+            hasText("-") and
+            hasClickAction()
+        )
+
+    private val multiplyButton =
+        composeTestRule.onNode(
+            hasTestTag("multiply button") and
+            hasText("*") and
+            hasClickAction()
+        )
+
+    private val divideButton =
+        composeTestRule.onNode(
+            hasTestTag("divide button") and
+            hasText("/") and
+            hasClickAction()
+        )
+
+    private val clearAllButton =
+        composeTestRule.onNode(
+            hasTestTag("clear button") and
+            hasText("C") and
+            hasClickAction()
+        )
+    private val backspaceButton =
+        composeTestRule.onNode(
+            hasTestTag("backs space button") and
+            hasText("x") and
+            hasClickAction()
+        )
+    private val dotButton =
+        composeTestRule.onNode(
+            hasTestTag("dot button") and
+            hasText(".") and
+            hasClickAction()
+        )
     private val inputText = composeTestRule.onNode(
         hasTestTag(testTag = "input text") and
                 hasNoClickAction()
@@ -62,23 +98,54 @@ class MainPage(
          inputText.assertTextEquals( expected )
     }
 
-    fun clickOperationPlusButton() {
+    fun plus() {
         plusButton.performClick()
     }
 
+    fun minus(){
+        minusButton.performClick()
+    }
+
+    fun multiply(){
+        multiplyButton.performClick()
+    }
+
+    fun divide(){
+        divideButton.performClick()
+    }
     fun clickNumberTwoButton() {
         numberTwoButton.performClick()
     }
 
-    fun clickEqualsButton() {
-        equalsButon.performClick()
+    fun input(number: String) {
+        composeTestRule.onNode(
+            hasTestTag("number $number button") and
+                    hasText(number) and
+                    hasClickAction()
+        ).performClick()
+    }
+
+    fun calculate() {
+        equalsButton.performClick()
     }
 
     fun assertResult(expected: String) {
         resultText.assertTextEquals(expected)
     }
 
-    fun clickNumberZero() {
+    fun inputZero() {
         numberZeroButton.performClick()
+    }
+
+    fun clearAll(){
+        clearAllButton.performClick()
+    }
+
+    fun backspace(){
+        backspaceButton.performClick()
+    }
+
+    fun inputDot(){
+        dotButton.performClick()
     }
 }

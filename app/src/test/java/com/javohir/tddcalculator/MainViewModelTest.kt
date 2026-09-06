@@ -6,7 +6,7 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * Created by: Javohir Oromov macos
+ * Created by: Javohir Oromov macOS
  * Project: TDDCalculator
  * Package: com.javohir.tddcalculator
  * Description: Unit Test
