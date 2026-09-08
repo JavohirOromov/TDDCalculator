@@ -15,20 +15,21 @@ class MainViewModelTest  {
 
     private lateinit var viewModel: MainViewModel
 
+    private lateinit var inputFlow: StateFlow<String>
+
+    private lateinit var resultFlow: StateFlow<String>
 
     @Before
     fun setup(){
         viewModel = MainViewModel()
+        inputFlow = viewModel.inputFlow
+        resultFlow = viewModel.resultFlow
+        assertEquals("", inputFlow.value)
+        assertEquals("", resultFlow.value)
     }
 
     @Test
     fun scenario_number_one(){
-        val inputFlow: StateFlow<String> = viewModel.inputFlow
-        val resultFlow: StateFlow<String> = viewModel.resultFlow
-
-        assertEquals("", inputFlow.value)
-        assertEquals("", resultFlow.value)
-
 
         viewModel.input("1")
          assertEquals("1", inputFlow.value)
@@ -46,12 +47,6 @@ class MainViewModelTest  {
 
     @Test
     fun sum_of_two_numbers_corner_case(){
-        val inputFlow: StateFlow<String> = viewModel.inputFlow
-        val resultFlow: StateFlow<String> = viewModel.resultFlow
-
-        assertEquals("", inputFlow.value)
-        assertEquals("", resultFlow.value)
-
 
         viewModel.input("1")
         assertEquals("1", inputFlow.value)
@@ -79,5 +74,38 @@ class MainViewModelTest  {
         viewModel.calculate()
         assertEquals( "1000000000+2000000000", inputFlow.value)
         assertEquals("3000000000", resultFlow.value)
+    }
+
+    @Test
+    fun subtraction_of_two_numbers(){
+        viewModel.input("9")
+        assertEquals("9",inputFlow.value)
+
+        viewModel.minus()
+        assertEquals("9-",inputFlow.value)
+
+        viewModel.input("4")
+        assertEquals("9-4", inputFlow.value)
+
+        viewModel.calculate()
+        assertEquals("9-4",inputFlow.value)
+        assertEquals("5",resultFlow.value)
+    }
+
+    @Test
+    fun subtraction_with_negative_result(){
+        viewModel.input(number = "4")
+        assertEquals("4",inputFlow.value)
+
+        viewModel.minus()
+        assertEquals("4-",inputFlow.value)
+
+        viewModel.input(number = "9")
+        assertEquals("4-9",inputFlow.value)
+
+        viewModel.calculate()
+        assertEquals("4-9",inputFlow.value)
+        assertEquals("-5",resultFlow.value)
+
     }
 }

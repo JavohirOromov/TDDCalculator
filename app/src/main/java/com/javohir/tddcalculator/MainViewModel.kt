@@ -22,6 +22,7 @@ class MainViewModel: ViewModel(), MainActions {
 
     private var left: String = ""
     private var right: String = ""
+    private var operation: String = ""
     private var addToLeft: Boolean = true
 
     private fun inputDigit(digit: String) {
@@ -30,8 +31,14 @@ class MainViewModel: ViewModel(), MainActions {
             inputMutableFlow.value = left
         } else {
             right += digit
-            inputMutableFlow.value = "$left+$right"
+            inputMutableFlow.value = "$left$operation$right"
         }
+    }
+
+    private fun chooseOperation(symbol: String){
+        operation = symbol
+        addToLeft = false
+        inputMutableFlow.value = "$left$operation"
     }
 
     override fun input(number: String) {
@@ -45,17 +52,24 @@ class MainViewModel: ViewModel(), MainActions {
     override fun inputDot() = Unit
 
     override fun plus() {
-        addToLeft = false
-        inputMutableFlow.value = "$left+"
+       return chooseOperation(symbol = "+")
     }
 
-    override fun minus() = Unit
+    override fun minus()  {
+       return chooseOperation(symbol = "-")
+    }
 
     override fun multiply() = Unit
 
     override fun divide() = Unit
     override fun calculate() {
-        val result = BigInteger(left).plus(BigInteger(right))
+        val leftNumber = BigInteger(left)
+        val rightNumber = BigInteger(right)
+        val result = when(operation){
+            "+" -> leftNumber.plus(rightNumber)
+            "-" -> leftNumber.minus(rightNumber)
+            else -> return
+        }
         resultMutableFlow.value = result.toString()
     }
 

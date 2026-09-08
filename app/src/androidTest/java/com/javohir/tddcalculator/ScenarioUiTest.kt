@@ -96,5 +96,21 @@ class ScenarioUiTest {
         assertInputField(expected = "1000000000+2000000000")
         assertResult(expected = "3000000000")
     }
+
+    @Test
+    fun subtraction_of_two_numbers() = with(mainPage){
+        input(number = "9")
+        assertInputField(expected = "9")
+
+        minus()
+        assertInputField(expected = "9-")
+
+        input(number = "4")
+        assertInputField(expected = "9-4")
+
+        calculate()
+        assertInputField(expected = "9-4")
+        assertResult(expected = "5")
+    }
 }
 
