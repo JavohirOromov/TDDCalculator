@@ -30,13 +30,13 @@ class MainViewModelTest  {
         assertEquals("", resultFlow.value)
 
 
-        viewModel.inputOne()
+        viewModel.input("1")
          assertEquals("1", inputFlow.value)
 
         viewModel.plus()
         assertEquals("1+", inputFlow.value)
 
-        viewModel.inputTwo()
+        viewModel.input("2")
         assertEquals("1+2", inputFlow.value)
 
         viewModel.calculate()
@@ -53,7 +53,7 @@ class MainViewModelTest  {
         assertEquals("", resultFlow.value)
 
 
-        viewModel.inputOne()
+        viewModel.input("1")
         assertEquals("1", inputFlow.value)
 
         var expected = "1"
@@ -65,7 +65,7 @@ class MainViewModelTest  {
         viewModel.plus()
         assertEquals("1000000000+",inputFlow.value)
 
-        viewModel.inputTwo()
+        viewModel.input("2")
         assertEquals("1000000000+2",inputFlow.value)
 
         expected = "1000000000+2"

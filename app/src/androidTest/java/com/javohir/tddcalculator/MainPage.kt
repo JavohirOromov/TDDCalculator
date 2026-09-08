@@ -15,15 +15,6 @@ import androidx.compose.ui.test.performClick
  */
 class MainPage(private val composeTestRule: ComposeContentTestRule) {
 
-    private val numberOneButton = composeTestRule.onNode(
-        hasTestTag(testTag = "number one button") and
-                hasText(text = "1") and
-                hasClickAction())
-    private val numberTwoButton = composeTestRule.onNode(
-        hasTestTag(testTag = "number two button") and
-                hasText(text = "2") and
-                hasClickAction())
-
 
     private val numberZeroButton = composeTestRule.onNode(
         hasTestTag(testTag = "number zero button") and
@@ -71,7 +62,7 @@ class MainPage(private val composeTestRule: ComposeContentTestRule) {
         )
     private val backspaceButton =
         composeTestRule.onNode(
-            hasTestTag("backs space button") and
+            hasTestTag("backspace button") and
             hasText("x") and
             hasClickAction()
         )
@@ -90,9 +81,6 @@ class MainPage(private val composeTestRule: ComposeContentTestRule) {
         hasTestTag(testTag = "result text") and
                 hasNoClickAction()
     )
-    fun clickNumberOneButton() {
-        numberOneButton.performClick()
-    }
 
     fun assertInputField(expected: String) {
          inputText.assertTextEquals( expected )
@@ -110,42 +98,39 @@ class MainPage(private val composeTestRule: ComposeContentTestRule) {
         multiplyButton.performClick()
     }
 
-    fun divide(){
+    fun divide() {
         divideButton.performClick()
     }
-    fun clickNumberTwoButton() {
-        numberTwoButton.performClick()
-    }
 
-    fun input(number: String) {
-        composeTestRule.onNode(
-            hasTestTag("number $number button") and
-                    hasText(number) and
-                    hasClickAction()
-        ).performClick()
-    }
+        fun input(number: String) {
+            composeTestRule.onNode(
+                hasTestTag("number $number button") and
+                        hasText(number) and
+                        hasClickAction()
+            ).performClick()
+        }
 
-    fun calculate() {
-        equalsButton.performClick()
-    }
+        fun calculate() {
+            equalsButton.performClick()
+        }
 
-    fun assertResult(expected: String) {
-        resultText.assertTextEquals(expected)
-    }
+        fun assertResult(expected: String) {
+            resultText.assertTextEquals(expected)
+        }
 
-    fun inputZero() {
-        numberZeroButton.performClick()
-    }
+        fun inputZero() {
+            numberZeroButton.performClick()
+        }
 
-    fun clearAll(){
-        clearAllButton.performClick()
-    }
+        fun clearAll() {
+            clearAllButton.performClick()
+        }
 
-    fun backspace(){
-        backspaceButton.performClick()
-    }
+        fun backspace() {
+            backspaceButton.performClick()
+        }
 
-    fun inputDot(){
-        dotButton.performClick()
-    }
+        fun inputDot() {
+            dotButton.performClick()
+        }
 }

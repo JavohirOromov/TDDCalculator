@@ -21,50 +21,80 @@ class ScenarioUiTest {
     private val mainPage = MainPage(composeTestRule)
 
     @Test
-    fun sum_of_two_numbers(){
-        mainPage.clickNumberOneButton()
-        mainPage.assertInputField(expected = "1")
+    fun sum_of_two_numbers() = with(mainPage) {
+        input("2")
+        assertInputField(expected = "2")
 
-        mainPage.plus()
-        mainPage.assertInputField(expected = "1+")
+        plus()
+        assertInputField(expected = "2+")
 
-        mainPage.clickNumberTwoButton()
-        mainPage.assertInputField(expected = "1+2")
+        input("1")
+        assertInputField(expected = "2+1")
 
-        mainPage.calculate()
-        mainPage.assertInputField(expected = "1+2")
-        mainPage.assertResult(expected = "3")
+        calculate()
+        assertInputField(expected = "2+1")
+        assertResult(expected = "3")
     }
 
     @Test
-    fun sum_of_two_numbers_corner_case(){
-        mainPage.clickNumberOneButton()
-        mainPage.assertInputField(expected = "1")
+    fun sum_of_two_numbers_more_complex() = with(mainPage){
+        input(number = "2")
+        assertInputField(expected = "2")
+
+        input("1")
+        assertInputField("21")
+
+        inputZero()
+        assertInputField("210")
+
+        inputZero()
+        assertInputField("2100")
+
+        plus()
+        assertInputField(expected = "2100+")
+
+        input("1")
+        assertInputField("2100+1")
+
+        inputZero()
+        assertInputField("2100+10")
+
+        input("2")
+        assertInputField(expected = "2100+102")
+
+        calculate()
+        assertInputField(expected = "2100+102")
+        assertResult(expected = "2202")
+    }
+
+    @Test
+    fun sum_of_two_numbers_corner_case() = with(mainPage) {
+        input("1")
+        assertInputField(expected = "1")
 
         var expected = "1"
-
-        repeat(times = 9){
-            mainPage.inputZero()
+        repeat(9) {
+            inputZero()
             expected += "0"
-            mainPage.assertInputField(expected = expected)
+            assertInputField(expected = expected)
         }
 
-        mainPage.plus()
-        mainPage.assertInputField(expected = "1000000000+")
+        plus()
+        assertInputField(expected = "1000000000+")
 
-        mainPage.clickNumberTwoButton()
-        mainPage.assertInputField(expected = "1000000000+2")
+        input("2")
+        assertInputField(expected = "1000000000+2")
 
         expected = "1000000000+2"
-        repeat(times = 9){
-            mainPage.inputZero()
+        repeat(9) {
+            inputZero()
             expected += "0"
-            mainPage.assertInputField(expected = expected)
+            assertInputField(expected = expected)
         }
 
-        mainPage.calculate()
-        mainPage.assertInputField(expected = "1000000000+2000000000")
-        mainPage.assertResult(expected = "3000000000")
+        calculate()
+        assertInputField(expected = "1000000000+2000000000")
+        assertResult(expected = "3000000000")
     }
 }
 

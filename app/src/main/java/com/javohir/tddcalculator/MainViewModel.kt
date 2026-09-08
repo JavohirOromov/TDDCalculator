@@ -34,26 +34,33 @@ class MainViewModel: ViewModel(), MainActions {
         }
     }
 
-    override fun inputOne() {
-        inputDigit(digit = "1")
-    }
-
-    override fun inputTwo() {
-        inputDigit(digit = "2")
+    override fun input(number: String) {
+        inputDigit(digit = number)
     }
 
     override fun inputZero() {
         inputDigit(digit = "0")
     }
 
+    override fun inputDot() = Unit
+
     override fun plus() {
         addToLeft = false
         inputMutableFlow.value = "$left+"
     }
 
+    override fun minus() = Unit
+
+    override fun multiply() = Unit
+
+    override fun divide() = Unit
     override fun calculate() {
         val result = BigInteger(left).plus(BigInteger(right))
         resultMutableFlow.value = result.toString()
     }
+
+    override fun backspace() = Unit
+
+    override fun clearAll() = Unit
 
 }
