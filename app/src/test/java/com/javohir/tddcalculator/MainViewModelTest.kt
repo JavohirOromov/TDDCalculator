@@ -140,7 +140,7 @@ class MainViewModelTest  {
         assertEquals("4",resultFlow.value)
     }
     @Test
-    fun division_with_remainder_is_truncated(){
+    fun division_with_remainder(){
         viewModel.input("9")
         viewModel.divide()
         viewModel.input("4")
@@ -148,7 +148,19 @@ class MainViewModelTest  {
 
         viewModel.calculate()
         assertEquals("9/4",inputFlow.value)
-        assertEquals("2",resultFlow.value)
+        assertEquals("2.25",resultFlow.value)
+    }
+
+    @Test
+    fun division_without_exact_result_is_rounded(){
+        viewModel.input("1")
+        viewModel.divide()
+        viewModel.input("3")
+        assertEquals("1/3",inputFlow.value)
+
+        viewModel.calculate()
+        assertEquals("1/3",inputFlow.value)
+        assertEquals("0.3333333333333333",resultFlow.value)
     }
 
 
@@ -207,5 +219,108 @@ class MainViewModelTest  {
 
         viewModel.backspace()
         assertEquals("12", inputFlow.value)
+    }
+
+    @Test
+    fun sum_of_two_decimal_numbers(){
+        viewModel.input("1")
+        assertEquals("1",inputFlow.value)
+
+        viewModel.inputDot()
+        assertEquals("1.",inputFlow.value)
+
+        viewModel.input("5")
+        assertEquals("1.5",inputFlow.value)
+
+        viewModel.plus()
+        assertEquals("1.5+",inputFlow.value)
+
+        viewModel.input("2")
+        viewModel.inputDot()
+        viewModel.input("2")
+        viewModel.input("5")
+        assertEquals("1.5+2.25",inputFlow.value)
+
+        viewModel.calculate()
+        assertEquals("1.5+2.25",inputFlow.value)
+        assertEquals("3.75",resultFlow.value)
+    }
+
+    @Test
+    fun dot_on_empty_operand_starts_with_zero(){
+        viewModel.inputDot()
+        assertEquals("0.",inputFlow.value)
+
+        viewModel.input("5")
+        assertEquals("0.5",inputFlow.value)
+
+        viewModel.multiply()
+        viewModel.inputDot()
+        assertEquals("0.5*0.",inputFlow.value)
+
+        viewModel.input("5")
+        assertEquals("0.5*0.5",inputFlow.value)
+
+        viewModel.calculate()
+        assertEquals("0.25",resultFlow.value)
+    }
+
+    @Test
+    fun second_dot_in_the_same_number_is_ignored(){
+        viewModel.input("1")
+        viewModel.inputDot()
+        viewModel.input("5")
+        assertEquals("1.5",inputFlow.value)
+
+        viewModel.inputDot()
+        assertEquals("1.5",inputFlow.value)
+
+        viewModel.minus()
+        viewModel.input("1")
+        viewModel.inputDot()
+        viewModel.input("2")
+        viewModel.inputDot()
+        assertEquals("1.5-1.2",inputFlow.value)
+    }
+
+    @Test
+    fun backspace_removes_dot(){
+        viewModel.input("1")
+        viewModel.inputDot()
+        viewModel.input("5")
+        assertEquals("1.5",inputFlow.value)
+
+        viewModel.backspace()
+        assertEquals("1.",inputFlow.value)
+
+        viewModel.backspace()
+        assertEquals("1",inputFlow.value)
+
+        viewModel.inputDot()
+        assertEquals("1.",inputFlow.value)
+    }
+
+    @Test
+    fun trailing_dot_is_ignored_on_calculate(){
+        viewModel.input("1")
+        viewModel.inputDot()
+        viewModel.plus()
+        viewModel.input("2")
+        viewModel.inputDot()
+        assertEquals("1.+2.",inputFlow.value)
+
+        viewModel.calculate()
+        assertEquals("3",resultFlow.value)
+    }
+
+    @Test
+    fun calculate_without_both_operands_does_nothing(){
+        viewModel.input("1")
+        viewModel.plus()
+        assertEquals("1+",inputFlow.value)
+
+        viewModel.calculate()
+        assertEquals("1+",inputFlow.value)
+        assertEquals("",resultFlow.value)
     }
 }

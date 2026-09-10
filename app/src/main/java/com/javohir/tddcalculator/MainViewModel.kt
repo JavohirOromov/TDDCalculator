@@ -3,7 +3,8 @@ package com.javohir.tddcalculator
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.math.BigInteger
+import java.math.BigDecimal
+import java.math.MathContext
 
 /**
  * Created by: Javohir Oromov macos
@@ -48,7 +49,11 @@ class MainViewModel: ViewModel(), MainActions {
         inputDigit(digit = "0")
     }
 
-    override fun inputDot() = Unit
+    override fun inputDot() {
+        val current = if (addToLeft) left else right
+        if (current.contains(char = DOT)) return
+        inputDigit(digit = if (current.isEmpty()) "$ZERO$DOT" else DOT.toString())
+    }
 
     override fun plus() {
        return chooseOperation(symbol = PLUS)
@@ -65,11 +70,20 @@ class MainViewModel: ViewModel(), MainActions {
     override fun divide()  {
         return chooseOperation(symbol = DIVIDE)
     }
-    override fun calculate() {
-        val leftNumber = BigInteger(left)
-        val rightNumber = BigInteger(right)
 
-        if (operation == DIVIDE && rightNumber == BigInteger.ZERO) {
+    /**
+     * A number is still being typed while it ends with a dot, so "1." means 1.
+     */
+    private fun numberOf(operand: String): BigDecimal =
+        BigDecimal(operand.removeSuffix(suffix = DOT.toString()))
+
+    override fun calculate() {
+        if (left.isEmpty() || right.isEmpty()) return
+
+        val leftNumber = numberOf(operand = left)
+        val rightNumber = numberOf(operand = right)
+
+        if (operation == DIVIDE && rightNumber.signum() == 0) {
             resultMutableFlow.value = ERROR
             return
         }
@@ -78,10 +92,10 @@ class MainViewModel: ViewModel(), MainActions {
             PLUS -> leftNumber.plus(rightNumber)
             MINUS -> leftNumber.minus(rightNumber)
             MULTIPLY -> leftNumber.multiply(rightNumber)
-            DIVIDE -> leftNumber.divide(rightNumber)
+            DIVIDE -> leftNumber.divide(rightNumber, PRECISION)
             else -> return
         }
-        resultMutableFlow.value = result.toString()
+        resultMutableFlow.value = result.stripTrailingZeros().toPlainString()
     }
 
     override fun backspace() {
@@ -111,5 +125,10 @@ class MainViewModel: ViewModel(), MainActions {
         private const val MULTIPLY = "*"
         private const val DIVIDE = "/"
         private const val ERROR = "Error"
+        private const val ZERO = "0"
+        private const val DOT = '.'
+
+        /** Endless quotients such as 1/3 are rounded to 16 significant digits. */
+        private val PRECISION = MathContext.DECIMAL64
     }
 }

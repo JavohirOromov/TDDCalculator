@@ -145,4 +145,91 @@ class ScenarioUiTest {
         assertInputField(expected = "5/0")
         assertResult(expected = "Error")
     }
+
+    @Test
+    fun sum_of_two_decimal_numbers() = with(mainPage){
+        input("1")
+        assertInputField(expected = "1")
+
+        inputDot()
+        assertInputField(expected = "1.")
+
+        input("5")
+        assertInputField(expected = "1.5")
+
+        plus()
+        assertInputField(expected = "1.5+")
+
+        input("2")
+        inputDot()
+        input("2")
+        input("5")
+        assertInputField(expected = "1.5+2.25")
+
+        calculate()
+        assertInputField(expected = "1.5+2.25")
+        assertResult(expected = "3.75")
+    }
+
+    @Test
+    fun division_with_remainder() = with(mainPage){
+        input("9")
+        assertInputField(expected = "9")
+
+        divide()
+        assertInputField(expected = "9/")
+
+        input("4")
+        assertInputField(expected = "9/4")
+
+        calculate()
+        assertInputField(expected = "9/4")
+        assertResult(expected = "2.25")
+    }
+
+    @Test
+    fun backspace_removes_the_last_symbol() = with(mainPage){
+        input("1")
+        input("2")
+        plus()
+        input("3")
+        assertInputField(expected = "12+3")
+
+        backspace()
+        assertInputField(expected = "12+")
+
+        backspace()
+        assertInputField(expected = "12")
+
+        backspace()
+        assertInputField(expected = "1")
+
+        minus()
+        input("1")
+        assertInputField(expected = "1-1")
+
+        calculate()
+        assertResult(expected = "0")
+    }
+
+    @Test
+    fun clear_all_resets_everything() = with(mainPage){
+        input("1")
+        plus()
+        input("2")
+        calculate()
+        assertInputField(expected = "1+2")
+        assertResult(expected = "3")
+
+        clearAll()
+        assertInputField(expected = "")
+        assertResult(expected = "")
+
+        input("4")
+        multiply()
+        input("5")
+        calculate()
+        assertInputField(expected = "4*5")
+        assertResult(expected = "20")
+    }
 }
