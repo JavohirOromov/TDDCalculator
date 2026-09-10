@@ -25,20 +25,19 @@ class MainViewModel: ViewModel(), MainActions {
     private var operation: String = ""
     private var addToLeft: Boolean = true
 
+    private fun showInput() {
+        inputMutableFlow.value = "$left$operation$right"
+    }
+
     private fun inputDigit(digit: String) {
-        if (addToLeft) {
-            left += digit
-            inputMutableFlow.value = left
-        } else {
-            right += digit
-            inputMutableFlow.value = "$left$operation$right"
-        }
+        if (addToLeft) left += digit else right += digit
+        showInput()
     }
 
     private fun chooseOperation(symbol: String){
         operation = symbol
         addToLeft = false
-        inputMutableFlow.value = "$left$operation"
+        showInput()
     }
 
     override fun input(number: String) {
@@ -85,9 +84,26 @@ class MainViewModel: ViewModel(), MainActions {
         resultMutableFlow.value = result.toString()
     }
 
-    override fun backspace() = Unit
+    override fun backspace() {
+        when {
+            addToLeft -> left = left.dropLast(n = 1)
+            right.isNotEmpty() -> right = right.dropLast(n = 1)
+            else -> {
+                operation = ""
+                addToLeft = true
+            }
+        }
+        showInput()
+    }
 
-    override fun clearAll() = Unit
+    override fun clearAll() {
+        left = ""
+        right = ""
+        operation = ""
+        addToLeft = true
+        inputMutableFlow.value = ""
+        resultMutableFlow.value = ""
+    }
 
     companion object{
         private const val PLUS = "+"

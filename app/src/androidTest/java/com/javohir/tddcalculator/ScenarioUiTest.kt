@@ -146,4 +146,3 @@ class ScenarioUiTest {
         assertResult(expected = "Error")
     }
 }
-

@@ -167,4 +167,45 @@ class MainViewModelTest  {
         assertEquals("5/0",inputFlow.value)
         assertEquals("Error",resultFlow.value)
     }
+
+    @Test
+    fun clear_all_resets_everything(){
+        viewModel.input("1")
+        viewModel.plus()
+        viewModel.input("2")
+        viewModel.calculate()
+        assertEquals("1+2",inputFlow.value)
+        assertEquals("3",resultFlow.value)
+
+        viewModel.clearAll()
+        assertEquals("",inputFlow.value)
+        assertEquals("",resultFlow.value)
+    }
+
+    @Test
+    fun backspace_removes_last_digit(){
+        viewModel.input("1")
+        viewModel.input("2")
+        viewModel.plus()
+        viewModel.input("3")
+        viewModel.input("4")
+        assertEquals("12+34",inputFlow.value)
+
+        viewModel.backspace()
+        assertEquals("12+3",inputFlow.value)
+
+        viewModel.backspace()
+        assertEquals("12+",inputFlow.value)
+    }
+
+    @Test
+    fun backspace_removes_operation(){
+        viewModel.input("1")
+        viewModel.input("2")
+        viewModel.plus()
+        assertEquals("12+", inputFlow.value)
+
+        viewModel.backspace()
+        assertEquals("12", inputFlow.value)
+    }
 }
