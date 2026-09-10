@@ -106,6 +106,65 @@ class MainViewModelTest  {
         viewModel.calculate()
         assertEquals("4-9",inputFlow.value)
         assertEquals("-5",resultFlow.value)
+    }
 
+    @Test
+    fun multiplication_of_two_numbers(){
+        viewModel.input("7")
+        assertEquals("7",inputFlow.value)
+
+        viewModel.multiply()
+        assertEquals("7*",inputFlow.value)
+
+        viewModel.input("8")
+        assertEquals("7*8",inputFlow.value)
+
+        viewModel.calculate()
+        assertEquals("7*8",inputFlow.value)
+        assertEquals("56",resultFlow.value)
+    }
+
+    @Test
+    fun division_of_two_numbers(){
+        viewModel.input("8")
+        assertEquals("8",inputFlow.value)
+
+        viewModel.divide()
+        assertEquals("8/",inputFlow.value)
+
+        viewModel.input("2")
+        assertEquals("8/2",inputFlow.value)
+
+        viewModel.calculate()
+        assertEquals("8/2",inputFlow.value)
+        assertEquals("4",resultFlow.value)
+    }
+    @Test
+    fun division_with_remainder_is_truncated(){
+        viewModel.input("9")
+        viewModel.divide()
+        viewModel.input("4")
+        assertEquals("9/4",inputFlow.value)
+
+        viewModel.calculate()
+        assertEquals("9/4",inputFlow.value)
+        assertEquals("2",resultFlow.value)
+    }
+
+
+    @Test
+    fun division_by_zero(){
+        viewModel.input("5")
+        assertEquals("5",inputFlow.value)
+
+        viewModel.divide()
+        assertEquals("5/",inputFlow.value)
+
+        viewModel.inputZero()
+        assertEquals("5/0",inputFlow.value)
+
+        viewModel.calculate()
+        assertEquals("5/0",inputFlow.value)
+        assertEquals("Error",resultFlow.value)
     }
 }

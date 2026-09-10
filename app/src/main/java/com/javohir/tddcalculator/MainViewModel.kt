@@ -52,22 +52,34 @@ class MainViewModel: ViewModel(), MainActions {
     override fun inputDot() = Unit
 
     override fun plus() {
-       return chooseOperation(symbol = "+")
+       return chooseOperation(symbol = PLUS)
     }
 
     override fun minus()  {
-       return chooseOperation(symbol = "-")
+       return chooseOperation(symbol = MINUS)
     }
 
-    override fun multiply() = Unit
+    override fun multiply() {
+        return chooseOperation(symbol = MULTIPLY)
+    }
 
-    override fun divide() = Unit
+    override fun divide()  {
+        return chooseOperation(symbol = DIVIDE)
+    }
     override fun calculate() {
         val leftNumber = BigInteger(left)
         val rightNumber = BigInteger(right)
+
+        if (operation == DIVIDE && rightNumber == BigInteger.ZERO) {
+            resultMutableFlow.value = ERROR
+            return
+        }
+
         val result = when(operation){
-            "+" -> leftNumber.plus(rightNumber)
-            "-" -> leftNumber.minus(rightNumber)
+            PLUS -> leftNumber.plus(rightNumber)
+            MINUS -> leftNumber.minus(rightNumber)
+            MULTIPLY -> leftNumber.multiply(rightNumber)
+            DIVIDE -> leftNumber.divide(rightNumber)
             else -> return
         }
         resultMutableFlow.value = result.toString()
@@ -77,4 +89,11 @@ class MainViewModel: ViewModel(), MainActions {
 
     override fun clearAll() = Unit
 
+    companion object{
+        private const val PLUS = "+"
+        private const val MINUS = "-"
+        private const val MULTIPLY = "*"
+        private const val DIVIDE = "/"
+        private const val ERROR = "Error"
+    }
 }

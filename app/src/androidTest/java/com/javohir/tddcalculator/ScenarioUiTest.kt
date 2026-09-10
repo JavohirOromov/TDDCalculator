@@ -1,5 +1,6 @@
 package com.javohir.tddcalculator
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Rule
 import org.junit.Test
@@ -111,6 +112,38 @@ class ScenarioUiTest {
         calculate()
         assertInputField(expected = "9-4")
         assertResult(expected = "5")
+    }
+
+    @Test
+    fun multiplication_of_two_numbers() = with(mainPage){
+        input("7")
+        assertInputField(expected = "7")
+
+        multiply()
+        assertInputField(expected = "7*")
+
+        input("8")
+        assertInputField(expected = "7*8")
+
+        calculate()
+        assertInputField(expected = "7*8")
+        assertResult(expected = "56")
+    }
+
+    @Test
+    fun division_by_zero() = with(mainPage){
+        input("5")
+        assertInputField(expected = "5")
+
+        divide()
+        assertInputField(expected = "5/")
+
+        inputZero()
+        assertInputField(expected = "5/0")
+
+        calculate()
+        assertInputField(expected = "5/0")
+        assertResult(expected = "Error")
     }
 }
 
